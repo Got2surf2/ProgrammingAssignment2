@@ -13,14 +13,14 @@
 ##    getinverse - returns the inverse of the matrix
 
 makeCacheMatrix <- function(myMatrix = matrix()) {
-  inverse <- NULL
-  set <- function(y) {
-    myMatrix <<- y
-    inverse <<- NULL
+  inverse <- NULL                                  ## initialize inverse to null
+  set <- function(y) {                             ## define the set function 
+    myMatrix <<- y                                 ## force the assignment to the global object
+    inverse <<- NULL                               ## set inverse to null in case it was previously calculated
   }
-  get <- function() myMatrix
-  setinverse <- function(solve) inverse <<- solve
-  getinverse <- function() inverse
+  get <- function() myMatrix                       ## get the value of the martix
+  setinverse <- function(solve) inverse <<- solve  ## set the inverse of the matrix
+  getinverse <- function() inverse                 ## set the inverse of the matrix
   list(set = set, get = get,
        setinverse = setinverse,
        getinverse = getinverse)
@@ -29,17 +29,17 @@ makeCacheMatrix <- function(myMatrix = matrix()) {
 
 ## This function returns the inverse of the supplied matrix
 ## It first checks to see if the inverse already exists - if it does
-## it returns the inverse otherwise it computes adn then returns the
+## it returns the inverse otherwise it computes and then returns the
 ## inverse
 
 cacheSolve <- function(myMatrix, ...) {
-  inverse <- myMatrix$getinverse()
-  if(!is.null(inverse)) {
-    message("getting cached data")
+  inverse <- myMatrix$getinverse()                 ## gets the matrix inverse
+  if(!is.null(inverse)) {                          ## checks to see if it is calready calculated
+    message("getting cached data")                 ## returs the already calculated matrix
     return(inverse)
   }
-  data <- myMatrix$get()
-  inverse <- solve(data, ...)
-  myMatrix$setinverse(inverse)
-  inverse
+  data <- myMatrix$get()                           ## get the matrix
+  inverse <- solve(data, ...)                      ## computes the inverse
+  myMatrix$setinverse(inverse)                     ## caches the inverse for future use
+  inverse                                          ## returns the just calculated inverse
 }
